@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Ngôi nhà của những ước mơ</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
@@ -17,6 +17,9 @@
       padding: 12px 20px;
       font-size: 20px;
       font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     .feed {
@@ -27,7 +30,7 @@
     .post {
       background: white;
       padding: 15px;
-      border-radius: 10px;
+      border-radius: 12px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       margin-bottom: 15px;
     }
@@ -46,6 +49,7 @@
     .content {
       font-size: 15px;
       margin-top: 5px;
+      white-space: pre-line;
     }
 
     .logout {
@@ -55,7 +59,6 @@
       padding: 8px 15px;
       border-radius: 20px;
       cursor: pointer;
-      float: right;
     }
 
     .logout:hover {
@@ -81,7 +84,7 @@ const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 async function checkLogin() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) {
-    window.location.href = "login.html";
+    window.location.href = "index.html";
   }
 }
 checkLogin();
@@ -101,6 +104,11 @@ async function loadPosts() {
   const feed = document.getElementById("feed");
   feed.innerHTML = "";
 
+  if (data.length === 0) {
+    feed.innerHTML = "<p style='text-align:center;'>Chưa có bài viết nào.</p>";
+    return;
+  }
+
   data.forEach(post => {
     const div = document.createElement("div");
     div.className = "post";
@@ -117,7 +125,7 @@ loadPosts();
 
 async function logout() {
   await supabase.auth.signOut();
-  window.location.href = "login.html";
+  window.location.href = "index.html";
 }
 </script>
 
